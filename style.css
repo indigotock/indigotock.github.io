@@ -1,10 +1,33 @@
+@import url('sakura.css');
+.split::after {
+    display: block;
+    content: "";
+    clear: both;
+}
+input[disabled],
+*[disabled] {
+    background-color: #e7e7e7;
+    border-color: #C7c7c7;
+}
+
+
+.split>.split-child {
+    width: 50%;
+    float: left;
+}
+@media(max-width:500px) {
+    .split>.split-child {
+        width: 100%;
+        float: none;
+    }
+}
 body {
     max-width: 960px;
 }
 
 body>header {
     text-align: center;
-    margin-bottom:1em;
+    margin-bottom: 1em;
 }
 
 body>header>h1 {
@@ -26,12 +49,12 @@ body>header>nav>ul>li:not(:first-child) {
     margin-left: .5em;
 }
 
-ol.tasklist{
-    display:none;
+ol.tasklist {
+    display: none;
 }
 
-ol.tasklist.active{
-    display:block;
+ol.tasklist.active {
+    display: block;
 }
 
 main {
@@ -59,11 +82,13 @@ main>#iframesec {
 #navsec {
     width: 25%;
     overflow-y: auto;
-    border-right:solid 1px currentColor;
+    border-right: solid 1px currentColor;
 }
-#navsec>div{
-    margin:1em;
+
+#navsec>div {
+    margin: 1em;
 }
+
 main>#navsec>div>h2 {
     margin-top: 0;
     margin-bottom: .25em;

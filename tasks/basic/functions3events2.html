@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../../style.css">
+</head>
+
+<body class='split'>
+    <form id='personform' class='split-child'>
+        <fieldset>
+            <legend>New/Edit Person</legend>
+            <label for="personName">Name</label>
+            <input required pattern="[a-zA-Z]+" type="text" name="personName" id="personName">
+            <label for="personAge">Age</label>
+            <input required type="number" name="personAge" id="personAge"></br>
+            <label for="personAge">Profession</label>
+            <input required pattern=".+" type="text" name="personProfession" id="personProfession"></br>
+            <input type="submit">
+            <input type="reset">
+        </fieldset>
+    </form>
+    <form id='personform' class='split-child'>
+        <fieldset>
+            <legend>Person Details</legend>
+            <label>Name</label>
+            <input id='detailsName' disabled type="text">
+            <label>Age</label>
+            <input id='detailsAge' disabled type="number">
+            <label>Profession</label>
+            <input id='detailsProfession' disabled type="text">
+        </fieldset>
+    </form>
+    <script>
+        var person = {}
+
+        function updateDetails() {
+            document.getElementById('detailsName').value = person.name
+            document.getElementById('detailsAge').value = person.age
+            document.getElementById('detailsProfession').value = person.profession
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            let form = document.getElementById('personform')
+
+            form.addEventListener('submit', e => {
+                e.preventDefault()
+                person.name = document.getElementById('personName').value
+                person.profession = document.getElementById('personProfession').value
+                person.age = document.getElementById('personAge').valueAsNumber
+                updateDetails();
+                form.reset()
+                return false
+            })
+        });
+    </script>
+</body>
+
+</html>
