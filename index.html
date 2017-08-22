@@ -54,7 +54,7 @@
                     </ol>
                     <ol class='tasklist' id='tasks-advanced'>
                         <li><a href="#" class='task-link' data-page='basic/challenge1'>c1</a></li>
-                        
+
                     </ol>
                 </nav>
             </div>
@@ -79,7 +79,7 @@
             Array.prototype.forEach.call(taskLists, function (link) {
                 link.addEventListener('click', e => {
                     let active = document.querySelector('.tasklist.active')
-                    if(active)
+                    if (active)
                         active.classList.remove('active')
                     document.getElementById(`tasks-${e.target.getAttribute('data-category')}`)
                         .classList.add('active')

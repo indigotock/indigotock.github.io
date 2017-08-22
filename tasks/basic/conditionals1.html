@@ -10,19 +10,19 @@
 
 <body>
     <script>
-        class Person{
-            constructor(name, age, occupation){
-                this.name=name
-                this.age=age
-                this.occupation=occupation
+        class Person {
+            constructor(name, age, occupation) {
+                this.name = name
+                this.age = age
+                this.occupation = occupation
             }
-            toString(){
+            toString() {
                 return `${this.name}: ${this.age} (${this.occupation})`
             }
         }
         var guy = new Person("Fred", 22, "Student")
 
-        document.write('Dude between 20 and 40? ' + (guy.age>20&&guy.age<40))
+        document.write('Dude between 20 and 40? ' + (guy.age > 20 && guy.age < 40))
     </script>
 </body>
 

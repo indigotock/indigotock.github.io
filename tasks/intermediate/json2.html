@@ -9,49 +9,49 @@
 </head>
 
 <body>
-        <script>
-                function makedl(data){
-                    var dl = document.createElement('dl')
-                    for (var key in data) {
-                        let dt = document.createElement('dt')
-                        dt.textContent=key
-                        dl.appendChild(dt)
-                        if (data.hasOwnProperty(key)) {
-                            let dd = document.createElement('dd')
-                            var element = data[key];
-                            if(typeof(element)=='object'){
-                                dd.appendChild(makedl(element))
-                            }else{
-                                dd.textContent = element
-                            }
-                            dl.appendChild(dd)
-                        }
+    <script>
+        function makedl(data) {
+            var dl = document.createElement('dl')
+            for (var key in data) {
+                let dt = document.createElement('dt')
+                dt.textContent = key
+                dl.appendChild(dt)
+                if (data.hasOwnProperty(key)) {
+                    let dd = document.createElement('dd')
+                    var element = data[key];
+                    if (typeof (element) == 'object') {
+                        dd.appendChild(makedl(element))
+                    } else {
+                        dd.textContent = element
                     }
-                    return dl
+                    dl.appendChild(dd)
                 }
-            document.addEventListener('DOMContentLoaded',function(){
-                fetch('https://raw.githubusercontent.com/ewomackQA/JSONDataRepo/master/kings.json')
-                .then((data)=>{
-                    data.json().then((v)=>{
+            }
+            return dl
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            fetch('https://raw.githubusercontent.com/ewomackQA/JSONDataRepo/master/kings.json')
+                .then((data) => {
+                    data.json().then((v) => {
                         var searchbox = document.createElement('input')
-                        searchbox.type='search'
+                        searchbox.type = 'search'
                         document.body.appendChild(searchbox)
-                        
+
                         var searchbutton = document.createElement('input')
-                        searchbutton.type='button'
-                        searchbutton.value='search!'
+                        searchbutton.type = 'button'
+                        searchbutton.value = 'search!'
                         document.body.appendChild(searchbutton)
-                        
-                        
+
+
                         var results = document.createElement('div')
                         document.body.appendChild(results)
-    
-                        searchbutton.onclick=()=>{
+
+                        searchbutton.onclick = () => {
                             let term = searchbox.value.toLowerCase()
-                            let res = v.filter(e=>
-                                e.nm.toLowerCase().includes(term.trim())||
-                                e.cty.toLowerCase().includes(term.trim())||
-                                e.hse.toLowerCase().includes(term.trim())||
+                            let res = v.filter(e =>
+                                e.nm.toLowerCase().includes(term.trim()) ||
+                                e.cty.toLowerCase().includes(term.trim()) ||
+                                e.hse.toLowerCase().includes(term.trim()) ||
                                 e.yrs.toLowerCase().includes(term.trim())
                             )
                             while (results.hasChildNodes()) {
@@ -61,9 +61,9 @@
                         }
                     })
                 })
-                
-            })
-        </script>
+
+        })
+    </script>
 </body>
 
 </html>

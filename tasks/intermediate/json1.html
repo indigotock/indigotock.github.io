@@ -9,33 +9,33 @@
 </head>
 
 <body>
-        <script>
-            function makedl(data){
-                var dl = document.createElement('dl')
-                for (var key in data) {
-                    let dt = document.createElement('dt')
-                    dt.textContent=key
-                    dl.appendChild(dt)
-                    if (data.hasOwnProperty(key)) {
-                        let dd = document.createElement('dd')
-                        var element = data[key];
-                        if(typeof(element)=='object'){
-                            dd.appendChild(makedl(element))
-                        }else{
-                            dd.textContent = element
-                        }
-                        dl.appendChild(dd)
+    <script>
+        function makedl(data) {
+            var dl = document.createElement('dl')
+            for (var key in data) {
+                let dt = document.createElement('dt')
+                dt.textContent = key
+                dl.appendChild(dt)
+                if (data.hasOwnProperty(key)) {
+                    let dd = document.createElement('dd')
+                    var element = data[key];
+                    if (typeof (element) == 'object') {
+                        dd.appendChild(makedl(element))
+                    } else {
+                        dd.textContent = element
                     }
+                    dl.appendChild(dd)
                 }
-                return dl
             }
-            fetch('https://raw.githubusercontent.com/ewomackQA/JSONDataRepo/master/example.json')
-            .then((data)=>{
-                data.json().then((v)=>{
+            return dl
+        }
+        fetch('https://raw.githubusercontent.com/ewomackQA/JSONDataRepo/master/example.json')
+            .then((data) => {
+                data.json().then((v) => {
                     document.body.appendChild(makedl(v))
                 })
             })
-        </script>
+    </script>
 </body>
 
 </html>

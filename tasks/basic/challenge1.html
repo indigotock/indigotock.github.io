@@ -13,11 +13,11 @@
         let aNumber = 2345;
         document.addEventListener('DOMContentLoaded', function () {
             let str = `aNumber is ${aNumber}`;
-            document.body.innerHTML=str+'</br>'
+            document.body.innerHTML = str + '</br>'
             let bouton = document.createElement('input')
-            bouton.type='button'
+            bouton.type = 'button'
             bouton.value = 'Alert me!'
-            bouton.addEventListener('click', e=>{
+            bouton.addEventListener('click', e => {
                 alert(str)
             })
             document.body.appendChild(bouton)

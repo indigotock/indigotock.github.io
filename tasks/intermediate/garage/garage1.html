@@ -95,17 +95,17 @@
                     let v = g.getVehicle(glist.selectedIndex)
                     form.querySelector('#kind').value = v.kind
                     form.querySelector('#make').value = v.make
-                    form.querySelector('#fee').value = '£ '+v.getFixFee()
+                    form.querySelector('#fee').value = '£ ' + v.getFixFee()
                     form.querySelector('#reg').value = v.reg
                     form.querySelector('#faults').value = v.faults || 'NO FAULTS'
                 }
-                
+
                 form.style.display =
                     (glist.selectedIndex === -1) ? 'none' : 'block'
             }
             document.querySelector('#vehicleList').addEventListener('change', changefunc)
             g.addVehicle(new Vehicle('Car', 'Honda', '112345'))
-            g.addVehicle(new Vehicle('Car', 'Honda', '112345',`a
+            g.addVehicle(new Vehicle('Car', 'Honda', '112345', `a
         b
     c
 d`))
