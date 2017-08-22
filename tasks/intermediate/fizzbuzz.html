@@ -1,12 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="../../style.css">
 </head>
+
 <body>
-    
+    <script>
+        function fizzbuzz(limit, fword, bword) {
+            for (let i = 0; i < limit; i++) {
+                var str = ""
+                if (i % 3 == 0)
+                    str += fword
+                if (i % 5 == 0)
+                    str += bword
+
+                if (str == '')
+                    str = i
+                document.write(i + ': ' + str + '</br>')
+
+            }
+        }
+
+        fizzbuzz(100, 'foo', 'bar')
+    </script>
 </body>
+
 </html>
