@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../../style.css">
+</head>
+
+<body>
+        <script>
+                function makedl(data){
+                    var dl = document.createElement('dl')
+                    for (var key in data) {
+                        let dt = document.createElement('dt')
+                        dt.textContent=key
+                        dl.appendChild(dt)
+                        if (data.hasOwnProperty(key)) {
+                            let dd = document.createElement('dd')
+                            var element = data[key];
+                            if(typeof(element)=='object'){
+                                dd.appendChild(makedl(element))
+                            }else{
+                                dd.textContent = element
+                            }
+                            dl.appendChild(dd)
+                        }
+                    }
+                    return dl
+                }
+            document.addEventListener('DOMContentLoaded',function(){
+                fetch('https://raw.githubusercontent.com/ewomackQA/JSONDataRepo/master/kings.json')
+                .then((data)=>{
+                    data.json().then((v)=>{
+                        var searchbox = document.createElement('input')
+                        searchbox.type='search'
+                        document.body.appendChild(searchbox)
+                        
+                        var searchbutton = document.createElement('input')
+                        searchbutton.type='button'
+                        searchbutton.value='search!'
+                        document.body.appendChild(searchbutton)
+                        
+                        
+                        var results = document.createElement('div')
+                        document.body.appendChild(results)
+    
+                        searchbutton.onclick=()=>{
+                            let term = searchbox.value.toLowerCase()
+                            let res = v.filter(e=>
+                                e.nm.toLowerCase().includes(term.trim())||
+                                e.cty.toLowerCase().includes(term.trim())||
+                                e.hse.toLowerCase().includes(term.trim())||
+                                e.yrs.toLowerCase().includes(term.trim())
+                            )
+                            while (results.hasChildNodes()) {
+                                results.removeChild(results.lastChild);
+                            }
+                            results.appendChild(makedl(res))
+                        }
+                    })
+                })
+                
+            })
+        </script>
+</body>
+
+</html>

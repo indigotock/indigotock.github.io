@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+    #paragraphs>p{
+        border:solid 1px currentColor;
+    }</style>
+</head>
+
+<body>
+    <input type='textarea' id='para' />
+    <input type='button' onclick='makepara()' value='make paragraph' />
+    <input type='button' onclick='editpara()' value='fill paragraph' />
+    <input type='button' onclick='deletepara()' value='delete paragraph' />
+
+    <div id='paragraphs'>
+
+    </div>
+
+    <script>
+        var colls = document.getElementById('paragraphs')
+
+        function makepara() {
+            colls.appendChild(document.createElement('p'))
+        }
+
+        function editpara() {
+            let ele = colls.children.item(colls.children.length - 1)
+            if (ele)
+                ele.textContent = document.getElementById('para').value
+        }
+
+        function deletepara() {
+            let ele = colls.children.item(colls.children.length - 1)
+            if (ele)
+                ele.remove()
+        }
+    </script>
+</body>
+
+</html>

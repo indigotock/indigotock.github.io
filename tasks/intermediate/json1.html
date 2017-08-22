@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../../style.css">
+</head>
+
+<body>
+        <script>
+            function makedl(data){
+                var dl = document.createElement('dl')
+                for (var key in data) {
+                    let dt = document.createElement('dt')
+                    dt.textContent=key
+                    dl.appendChild(dt)
+                    if (data.hasOwnProperty(key)) {
+                        let dd = document.createElement('dd')
+                        var element = data[key];
+                        if(typeof(element)=='object'){
+                            dd.appendChild(makedl(element))
+                        }else{
+                            dd.textContent = element
+                        }
+                        dl.appendChild(dd)
+                    }
+                }
+                return dl
+            }
+            fetch('https://raw.githubusercontent.com/ewomackQA/JSONDataRepo/master/example.json')
+            .then((data)=>{
+                data.json().then((v)=>{
+                    document.body.appendChild(makedl(v))
+                })
+            })
+        </script>
+</body>
+
+</html>

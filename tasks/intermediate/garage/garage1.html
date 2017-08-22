@@ -1,0 +1,111 @@
+<html>
+
+<head>
+    <title>Garage</title>
+    <link rel="stylesheet" href="../../../style.css">
+</head>
+
+<body>
+    <div class='split'>
+        <form class='split-child' action="#" id="garageform">
+            <fieldset>
+                <legend>Garage</legend>
+                <label for="vehicleList">Vehicles</label>
+                <select size="5" id='vehicleList' name="vehicleList">
+                </select>
+                <div id='selected'>
+                    Selection
+                    <label>Kind</label>
+                    <input disabled type="text" id="kind">
+                    <label>Make</label>
+                    <input disabled type="text" id="make">
+                    <label>Registration</label>
+                    <input disabled type="text" id="reg">
+                    <label>Faults</label>
+                    <textarea rows="5" disabled type="text" id="faults"></textarea>
+                    <input type="button" value="Check out" id='checkOutVehicle'>
+                </div>
+            </fieldset>
+        </form>
+        <form class='split-child' action="#" id="newvehicle">
+            <fieldset>
+                <legend>New Vehicle</legend>
+                <label for="vehicleKind">Type</label>
+                <select required name="vehicleKind" id="kind">
+                    <option>Car</option>
+                    <option>Motorbike</option>
+                </select>
+                <label for="make">Make</label>
+                <input required type="text" id='make' name="make"></br>
+
+                <label for="reg">Registration</label>
+                <input required type="text" id='reg' name="reg"></br>
+
+                <label for="vehicleBrand">Faults</label>
+                <textarea rows="5" id='faults' name="faults"></textarea></br>
+
+                <input type="submit" value='Check in'>
+                <input type="reset">
+            </fieldset>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let g = new Garage('Kyle\'s Workshop');
+
+            document.getElementById('newvehicle').addEventListener('submit', e => {
+                let newform = document.getElementById('newvehicle')
+                e.preventDefault()
+                let kind = newform.querySelector('#kind').value
+                let make = newform.querySelector('#make').value
+                let reg = newform.querySelector('#reg').value
+                let faults = newform.querySelector('#faults').value
+                g.addVehicle(new Vehicle(kind, make, reg, faults || ''))
+                newform.reset()
+                return false
+            })
+            document.getElementById('checkOutVehicle').addEventListener('click', e => {
+                let ind = document.querySelector('#vehicleList').selectedIndex
+                if (ind != -1)
+                    g.removeVehicle(ind)
+            })
+            g.addUpdateListener(() => {
+                let list = document.getElementById('vehicleList')
+                while (list.hasChildNodes()) {
+                    list.removeChild(list.lastChild)
+                }
+
+                document.querySelector('#selected').style.display =
+                    (document.querySelector('#vehicleList').selectedIndex === -1) ? 'none' : 'block'
+                g.vehicles().forEach((e, i) => {
+                    let ele = document.createElement('option')
+                    ele.value = i
+                    ele.textContent = e
+                    list.appendChild(ele)
+                })
+            })
+            let changefunc = e => {
+                let form = document.querySelector('#selected')
+                let glist = document.querySelector('#vehicleList')
+                if (glist.selectedIndex != -1) {
+                    let v = g.getVehicle(glist.selectedIndex)
+                    form.querySelector('#kind').value = v.kind
+                    form.querySelector('#make').value = v.make
+                    form.querySelector('#reg').value = v.reg
+                    form.querySelector('#faults').value = v.faults || 'NO FAULTS'
+                }
+                
+                form.style.display =
+                    (glist.selectedIndex === -1) ? 'none' : 'block'
+            }
+            document.querySelector('#vehicleList').addEventListener('change', changefunc)
+            g.addVehicle(new Vehicle('Car', 'Honda', '112345'))
+        })
+    </script>
+    <script src="./garage.js"></script>
+    <script>
+    </script>
+</body>
+
+</html>
