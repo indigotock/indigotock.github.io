@@ -5,6 +5,12 @@ class Vehicle {
         this.reg = reg
         this.faults = faults
     }
+    getFixFee(){
+        // Each line in the faults info is considered one fault
+        
+        let numlines = ((this.faults||'').match(/\n/g) || []).length
+        return numlines * ((this.kind==='Motorbike')?100:130)
+    }
     toString() {
         return `${this.make} ${this.kind}: ${this.reg}`
     }
