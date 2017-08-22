@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../../style.css">
+</head>
+
+<body>
+    <script>
+        class Person{
+            constructor(name, age, occupation){
+                this.name=name
+                this.age=age
+                this.occupation=occupation
+            }
+            toString(){
+                return `${this.name}: ${this.age} (${this.occupation})`
+            }
+        }
+        var guy = new Person("Fred", 22, "Student")
+
+        document.write('Dude between 20 and 40? ' + (guy.age>20&&guy.age<40))
+    </script>
+</body>
+
+</html>
