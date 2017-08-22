@@ -75,12 +75,9 @@ section>iframe {
     height: 100%;
 }
 
-main>#iframesec {
-    width: 75%;
-}
-
 #navsec {
     width: 25%;
+    min-width:120px;
     overflow-y: auto;
     border-right: solid 1px currentColor;
 }
@@ -92,6 +89,10 @@ main>#iframesec {
 main>#navsec>div>h2 {
     margin-top: 0;
     margin-bottom: .25em;
+}
+
+#navsec>div>nav>ol{
+    padding-left:1em;
 }
 
 body,
