@@ -1,16 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="sakura.css">
-    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css?family=Lora:400i|Montserrat:500|Open+Sans" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Kyle Hughes</title>
 </head>
+
 <body>
     <header>
         <h1>Greetings</h1>
-
+        <nav>
+            <ul>
+                <li>
+                    <a class='category-link' data-category='basic' href='#'>Basic</a>
+                </li>
+                <li>
+                    <a class='category-link' data-category='intermediate' href='#'>Intermediate</a>
+                </li>
+                <li>
+                    <a class='category-link' data-category='advanced' href='#'>Advanced</a>
+                </li>
+            </ul>
+        </nav>
     </header>
+    <main>
+        <section id='navsec'>
+            <div class='padding'>
+                <h2>Tasks</h2>
+                <nav>
+                    <ol class='tasklist active' id='tasks-basic'>
+                        <li><a href="#" class='task-link' data-page='basic/challenge1'>Challenge 1</a></li>
+                    </ol>
+                    <ol class='tasklist' id='tasks-intermediate'>
+                        <li><a href="#" class='task-link' data-page='basic/challenge2'>Challenge 2</a></li>
+                    </ol>
+                    <ol class='tasklist' id='tasks-advanced'>
+                        <li><a href="#" class='task-link' data-page='basic/challenge1'>c1</a></li>
+                        
+                    </ol>
+                </nav>
+            </div>
+        </section>
+        <section id='iframesec'>
+            <!-- <span class='bigicon fa fa-fw fa-ellipsis-h'></span> -->
+            <iframe src="tasks/basic/challenge1.html" frameborder="0"></iframe>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', e => {
+            let iframe = document.querySelector('#iframesec>iframe')
+            let eles = document.getElementsByClassName('task-link')
+            Array.prototype.forEach.call(eles, function (link) {
+                link.addEventListener('click', e => {
+                    iframe.src = 'tasks/' + e.target.getAttribute('data-page') + '.html'
+                })
+            }, this);
+
+            let taskLists = document.getElementsByClassName('category-link')
+            Array.prototype.forEach.call(taskLists, function (link) {
+                link.addEventListener('click', e => {
+                    let active = document.querySelector('.tasklist.active')
+                    if(active)
+                        active.classList.remove('active')
+                    document.getElementById(`tasks-${e.target.getAttribute('data-category')}`)
+                        .classList.add('active')
+                })
+            }, this);
+        })
+    </script>
 </body>
+
 </html>

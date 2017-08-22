@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Challenge 1</title>
+</head>
+
+<body>
+    <script>
+        let aNumber = 2345;
+        document.addEventListener('DOMContentLoaded', function () {
+            let str = `aNumber is ${aNumber}`;
+            document.body.innerHTML=str+'</br>'
+            let bouton = document.createElement('input')
+            bouton.type='button'
+            bouton.value = 'Alert me!'
+            bouton.addEventListener('click', e=>{
+                alert(str)
+            })
+            document.body.appendChild(bouton)
+            console.log(str);
+        });
+    </script>
+</body>
+
+</html>
