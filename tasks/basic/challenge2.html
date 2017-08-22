@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Challenge 2</title>
+</head>
+
+<body>
+    <input id='incage' type='button' value='Click me' />
+    <script>
+        class Person {
+            constructor(name, age, occupation) {
+                this.name = name
+                this.age = age
+                this.occupation = occupation
+            }
+            toString() {
+                return `${this.name}: ${this.age} (${this.occupation})`
+            }
+        }
+
+        var guy = new Person("Fred", 11, "Student")
+        document.getElementById('incage').onclick = () => {
+            guy.age++;
+            console.log(guy)
+        }
+
+        function square(num) {
+            return num * num
+        }
+
+        function sum(a, b, c) {
+            return a + b + c
+        }
+
+        document.write(guy)
+        guy.age = 22
+        document.write(guy)
+    </script>
+</body>
+
+</html>
