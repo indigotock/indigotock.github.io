@@ -17,29 +17,8 @@
         </fieldset>
     </form>
     <div id='results'></div>
+    <script src="makedl.js"></script>
     <script>
-        function makedl(data) {
-            var dl = document.createElement('dl')
-            for (var key in data) {
-                let dt = document.createElement('dt')
-                if (!isNaN(+key))
-                    dt.textContent = Number(key) + 1
-                else
-                    dt.textContent = key
-                dl.appendChild(dt)
-                if (data.hasOwnProperty(key)) {
-                    let dd = document.createElement('dd')
-                    var element = data[key];
-                    if (typeof (element) == 'object') {
-                        dd.appendChild(makedl(element))
-                    } else {
-                        dd.textContent = element
-                    }
-                    dl.appendChild(dd)
-                }
-            }
-            return dl
-        }
         document.addEventListener('DOMContentLoaded', function () {
             fetch('https://raw.githubusercontent.com/ewomackQA/JSONDataRepo/master/kings.json')
                 .then((data) => {
