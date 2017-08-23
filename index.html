@@ -64,28 +64,47 @@
         </section>
         <section id='iframesec'>
             <!-- <span class='bigicon fa fa-fw fa-ellipsis-h'></span> -->
-            <iframe src="tasks/basic/challenge1.html" frameborder="0"></iframe>
+            <iframe src="" frameborder="0"></iframe>
         </section>
     </main>
 
     <script>
         document.addEventListener('DOMContentLoaded', e => {
             let iframe = document.querySelector('#iframesec>iframe')
+
+            function setCategory(cat) {
+                let active = document.querySelector('.tasklist.active')
+                if (active)
+                    active.classList.remove('active')
+                document.getElementById(`tasks-${cat}`)
+                    .classList.add('active')
+                localStorage.setItem('category', cat)
+            }
+
+            function setTask(page) {
+                iframe.src = 'tasks/' + page + '.html'
+                localStorage.setItem('task', page)
+            }
+            let prevCategory = localStorage.getItem('category')
+            let prevTask = localStorage.getItem('task')
+            if (prevCategory)
+                setCategory(prevCategory)
+            if (prevTask)
+                setTask(prevTask)
+
+
+
             let eles = document.getElementsByClassName('task-link')
             Array.prototype.forEach.call(eles, function (link) {
                 link.addEventListener('click', e => {
-                    iframe.src = 'tasks/' + e.target.getAttribute('data-page') + '.html'
+                    setTask(e.target.getAttribute('data-page'))
                 })
             }, this);
 
             let taskLists = document.getElementsByClassName('category-link')
             Array.prototype.forEach.call(taskLists, function (link) {
                 link.addEventListener('click', e => {
-                    let active = document.querySelector('.tasklist.active')
-                    if (active)
-                        active.classList.remove('active')
-                    document.getElementById(`tasks-${e.target.getAttribute('data-category')}`)
-                        .classList.add('active')
+                    setCategory(e.target.getAttribute('data-category'))
                 })
             }, this);
         })
