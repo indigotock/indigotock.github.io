@@ -14,7 +14,10 @@
             var dl = document.createElement('dl')
             for (var key in data) {
                 let dt = document.createElement('dt')
-                dt.textContent = key
+                if (!isNaN(+key))
+                    dt.textContent = Number(key) + 1
+                else
+                    dt.textContent = key
                 dl.appendChild(dt)
                 if (data.hasOwnProperty(key)) {
                     let dd = document.createElement('dd')

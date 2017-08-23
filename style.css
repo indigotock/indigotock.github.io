@@ -1,19 +1,17 @@
 @import url('sakura.css');
-.split::after {
-    display: block;
-    content: "";
-    clear: both;
+@import url('https://fonts.googleapis.com/css?family=Lora|Montserrat|Open+Sans');
+.split {
+    display: flex;
+}
+
+.split>.split-child {
+    width: 50%;
 }
 
 input[disabled],
 *[disabled] {
     background-color: #e7e7e7;
     border-color: #C7c7c7;
-}
-
-.split>.split-child {
-    width: 50%;
-    float: left;
 }
 
 @media(max-width:500px) {
