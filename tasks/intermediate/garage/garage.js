@@ -5,14 +5,19 @@ class Vehicle {
         this.reg = reg
         this.faults = faults
     }
+    getFaults() {
+        if (!this.faults)
+            return []
+        return (this.faults).split(/\n+/)
+    }
+    numFaults() {
+        return this.getFaults().length
+    }
     getFixFee() {
-        // Each line in the faults info is considered one fault
-
-        let numlines = ((this.faults || '').match(/\n/g) || []).length
-        return numlines * ((this.kind === 'Motorbike') ? 100 : 130)
+        return this.numFaults() * ((this.kind === 'Motorbike') ? 100 : 130)
     }
     toString() {
-        return `${this.make} ${this.kind}: ${this.reg}`
+        return `${this.make} ${this.kind}: ${this.reg} (${this.numFaults()} faults)`
     }
 }
 
@@ -29,6 +34,9 @@ function Garage(name) {
     this.addVehicle = function (vehicle) {
         // Push returns the new length, 
         // so return the index of added vehicle
+        // Cannot add duplicate vehicles
+        if (vehicles.filter(e => e.reg == vehicle.reg).length > 0)
+            return null
         let ret = vehicles.push(vehicle) - 1
         updateListeners.forEach(e => e.call(null))
         return ret
@@ -40,6 +48,10 @@ function Garage(name) {
 
     this.addUpdateListener = function (cb) {
         updateListeners.push(cb)
+    }
+
+    this.getVehicleIndex = function (v) {
+        return vehicles.indexOf(v)
     }
 
     this.removeVehicle = function (ind) {

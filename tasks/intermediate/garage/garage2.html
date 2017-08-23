@@ -1,0 +1,161 @@
+<html>
+
+<head>
+    <title>Garage</title>
+    <link rel="stylesheet" href="../../../style.css">
+    <style>
+        .console-row {
+            width: 100%;
+            font-family: monospace;
+            height: 2ch;
+            display: block;
+            font-size: 1.5ch;
+            font-weight: normal;
+        }
+
+        #console {
+            border-style: groove;
+            height: 20ch;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <fieldset>
+        <legend>Console</legend>
+
+        <input id='consoleInput' type="text">
+        <div id='console'>
+        </div>
+        <input type="button" value="Clear" id='consoleClear'>
+    </fieldset>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let vehicles = [];
+            let g = new Garage('Kyle\'s Garage')
+            g.addVehicle(new Vehicle('Car', 'Honda', '112345'))
+            g.addVehicle(new Vehicle('Motorbike', 'Harley', 'abcdefg', `Fault 1
+Fault 2
+Fault 3
+Fault 4`))
+            let oldlog = console.log
+            console.log = (a) => {
+                let c = document.getElementById('console')
+                c.innerHTML += `<span class='console-row'>${a}</span>`
+                oldlog(a)
+                c.scrollTop = c.scrollHeight
+            }
+            document.querySelector('#consoleClear').addEventListener('click', e => {
+                let c = document.querySelector('#console')
+                while (c.hasChildNodes())
+                    c.removeChild(c.lastChild)
+            })
+            document.querySelector('#consoleInput').addEventListener('keyup', e => {
+                let inbox = document.querySelector('#consoleInput')
+                if (e.keyCode === 13) {
+                    console.log('> ' + inbox.value)
+                    parse(inbox.value)
+                    inbox.value = ''
+                }
+            })
+
+            function parse(str) {
+                let parts = str.split(/\s+/)
+
+                function getPart(ind) {
+                    return parts[ind] || undefined
+                }
+                if (parts.length == 0)
+                    return
+
+                switch (parts[0]) {
+                    case 'detail':
+                        let found = g.vehicles().filter(e => e.reg == getPart(1))
+                        if (found.length > 0) {
+                            let e = found[0]
+                            console.log(e)
+                            console.log('Faults:')
+                            for (let i = 0; i < e.getFaults().length; i++) {
+                                console.log('- ' + e.getFaults()[i])
+                            }
+                        } else {
+                            console.log('Vehicle not found or no registration given')
+                        }
+                        break;
+                    case 'list':
+                        console.log('Checked in vehicles:')
+                        g.vehicles().forEach((e, i) => {
+                            console.log(`Vehicle ${i}: ${e}`)
+                        })
+                        break;
+                    case 'vehicles':
+                        console.log('Non-checked in vehicles:')
+                        vehicles.forEach((e, i) => {
+                            console.log(`Vehicle ${i}: ${e}`)
+                        })
+                        break;
+                    case 'check':
+                        let inout = getPart(1)
+                        if (inout == 'in') {
+                            let cifound = vehicles.filter(e => e.reg == getPart(2))
+                            if (cifound.length == 0) {
+                                console.log('Vehicle not found or no registration given')
+                            } else {
+                                let ind = vehicles.indexOf(cifound[0])
+                                g.addVehicle(cifound[0])
+                                vehicles.splice(ind, 1)
+                                console.log(`Checked in vehicle ${cifound[0].reg}`)
+                            }
+                        } else if (inout == 'out') {
+                            let cofound = g.vehicles().filter(e => e.reg == getPart(2))
+                            if (cofound.length == 0) {
+                                console.log('Vehicle not found or no registration given')
+                            } else {
+                                g.removeVehicle(g.getVehicleIndex(cofound[0]))
+                                vehicles.push(cofound[0])
+                                console.log(`Checked out vehicle ${cofound[0].reg}`)
+                            }
+                        }
+                        break;
+                    case 'new':
+                        let type = getPart(1)
+                        let make = getPart(2)
+                        let reg = getPart(3)
+                        let faults = getPart(4)
+                        if (type && make && reg) {
+                            let v = new Vehicle(type, make, reg)
+                            if (faults) {
+                                v.faults = faults.replace('_', ' ').split(',').join('\n')
+                            } else {
+                                v.faults = undefined
+                            }
+                            vehicles.push(v)
+                            console.log('Added vehicle')
+                            return
+                        }
+                        break;
+                    case 'delete':
+                        let regs = getPart(1)
+                        if (regs) {
+                            let cifound = vehicles.filter(e => e.reg == regs)
+                            if (cifound.length > 0) {
+                                let ind = vehicles.indexOf(cifound[0])
+                                vehicles.splice(ind, 1)
+                                console.log('Deleted vehicle')
+                                return
+                            }
+                        }
+
+                        break;
+                }
+            }
+
+            console.log('Welcome to ' + g.name)
+
+        })
+    </script>
+    <script src="./garage.js"></script>
+</body>
+
+</html>

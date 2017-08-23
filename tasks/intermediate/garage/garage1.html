@@ -12,6 +12,9 @@
                 <legend>Garage</legend>
                 <label for="vehicleList">Vehicles</label>
                 <select size="5" id='vehicleList' name="vehicleList">
+                    <option value="0">1Car</option>
+                    <option value="1">C2ar</option>
+                    <option value="2">Ca3r</option>
                 </select>
                 <div id='selected'>
                     Selection
@@ -47,46 +50,88 @@
                 <label for="vehicleBrand">Faults</label>
                 <textarea rows="5" id='faults' name="faults"></textarea></br>
 
-                <input type="submit" value='Check in'>
+                <input type="submit" value='Store'>
                 <input type="reset">
+            </fieldset>
+        </form>
+        <form class='split-child' action="#" id="storedVehicles">
+            <fieldset>
+                <legend>Vehicles</legend>
+                <select required size="10" id="allVehicles">
+                </select>
+                <input type="submit" value='Check in'>
+                <input type="button" id='deleteStoredVehicle' value='Delete'>
             </fieldset>
         </form>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            let g = new Garage('Kyle\'s Workshop');
-
-            document.getElementById('newvehicle').addEventListener('submit', e => {
-                let newform = document.getElementById('newvehicle')
-                e.preventDefault()
-                let kind = newform.querySelector('#kind').value
-                let make = newform.querySelector('#make').value
-                let reg = newform.querySelector('#reg').value
-                let faults = newform.querySelector('#faults').value
-                g.addVehicle(new Vehicle(kind, make, reg, faults || ''))
-                newform.reset()
-                return false
-            })
-            document.getElementById('checkOutVehicle').addEventListener('click', e => {
-                let ind = document.querySelector('#vehicleList').selectedIndex
-                if (ind != -1)
-                    g.removeVehicle(ind)
-            })
-            g.addUpdateListener(() => {
-                let list = document.getElementById('vehicleList')
+            function updateVehicleSelectList(vs, list) {
                 while (list.hasChildNodes()) {
                     list.removeChild(list.lastChild)
                 }
-
-                document.querySelector('#selected').style.display =
-                    (document.querySelector('#vehicleList').selectedIndex === -1) ? 'none' : 'block'
-                g.vehicles().forEach((e, i) => {
+                vs.forEach((e, i) => {
                     let ele = document.createElement('option')
                     ele.value = i
                     ele.textContent = e
                     list.appendChild(ele)
                 })
+            }
+            let g = new Garage('Kyle\'s Workshop')
+            let vehicles = []
+
+            document.getElementById('newvehicle').addEventListener('submit', e => {
+                let form = document.getElementById('newvehicle')
+                e.preventDefault()
+                let kind = form.querySelector('#kind').value
+                let make = form.querySelector('#make').value
+                let reg = form.querySelector('#reg').value
+                let faults = form.querySelector('#faults').value
+                vehicles.push(new Vehicle(kind, make, reg, faults || ''))
+                updateVehicleSelectList(vehicles, document.querySelector('#allVehicles'))
+                form.reset()
+                return false
+            })
+            document.getElementById('storedVehicles').addEventListener('submit', e => {
+                e.preventDefault()
+                let form = document.getElementById('storedVehicles')
+                let storedVehicleList = document.getElementById('allVehicles')
+                if (storedVehicleList.selectedIndex != -1) {
+                    g.addVehicle(vehicles[storedVehicleList.selectedIndex])
+                    vehicles.splice(storedVehicleList.selectedIndex, 1)
+                }
+                updateVehicleSelectList(vehicles, document.querySelector('#allVehicles'))
+                updateVehicleSelectList(g.vehicles(), document.querySelector('#vehicleList'))
+                return false
+            })
+            document.getElementById('deleteStoredVehicle').addEventListener('click', e => {
+                e.preventDefault()
+                let storedVehicleList = document.getElementById('allVehicles')
+                if (storedVehicleList.selectedIndex != -1) {
+                    vehicles.splice(storedVehicleList.selectedIndex, 1)
+                }
+                updateVehicleSelectList(vehicles, document.querySelector('#allVehicles'))
+                return false
+            })
+            document.getElementById('checkOutVehicle').addEventListener('click', e => {
+                let ind = document.querySelector('#vehicleList').selectedIndex
+                let v = g.getVehicle(ind)
+                vehicles.push(v)
+                if (ind != -1)
+                    g.removeVehicle(ind)
+
+
+
+                updateVehicleSelectList(vehicles, document.querySelector('#allVehicles'))
+                updateVehicleSelectList(g.vehicles(), document.querySelector('#vehicleList'))
+            })
+            g.addUpdateListener(() => {
+                let list = document.getElementById('vehicleList')
+                updateVehicleSelectList(g.vehicles(), list)
+
+                document.querySelector('#selected').style.display =
+                    (document.querySelector('#vehicleList').selectedIndex === -1) ? 'none' : 'block'
             })
             let changefunc = e => {
                 let form = document.querySelector('#selected')
