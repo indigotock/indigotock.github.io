@@ -51,13 +51,17 @@
 
                         form.addEventListener('submit', (e) => {
                             e.preventDefault()
-                            let term = searchbox.value.toLowerCase()
-                            let res = v.filter(e =>
-                                e.nm.toLowerCase().includes(term.trim()) ||
-                                e.cty.toLowerCase().includes(term.trim()) ||
-                                e.hse.toLowerCase().includes(term.trim()) ||
-                                e.yrs.toLowerCase().includes(term.trim())
-                            )
+                            let term = searchbox.value.toLowerCase().trim()
+                            let res = v.filter(e => {
+                                for (var key in e) {
+                                    if (e.hasOwnProperty(key)) {
+                                        var v = e[key];
+                                        if (v.toLowerCase().includes(
+                                                term))
+                                            return true
+                                    }
+                                }
+                            })
                             while (results.hasChildNodes()) {
                                 results.removeChild(results.lastChild);
                             }
