@@ -72,6 +72,8 @@ Fault 4`))
                 switch (parts[0]) {
                     case 'detail':
                         let found = g.vehicles().filter(e => e.reg == getPart(1))
+                        if (found.length == 0)
+                            found = vehicles.filter(e => e.reg == getPart(1))
                         if (found.length > 0) {
                             let e = found[0]
                             console.log(e)
@@ -126,7 +128,7 @@ Fault 4`))
                         if (type && make && reg) {
                             let v = new Vehicle(type, make, reg)
                             if (faults) {
-                                v.faults = faults.replace('_', ' ').split(',').join('\n')
+                                v.faults = (faults.split('_').join(' ')).split(',').join('\n')
                             } else {
                                 v.faults = undefined
                             }
