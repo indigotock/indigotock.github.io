@@ -9,12 +9,23 @@
 </head>
 
 <body>
+    <form id='searchForm'>
+        <fieldset>
+            <legend>Search Monarchs</legend>
+            <input type="search" name="search" placeholder="Search term..." id="search">
+            <input type="submit" value="Search" id='searchBtn'>
+        </fieldset>
+    </form>
+    <div id='results'></div>
     <script>
         function makedl(data) {
             var dl = document.createElement('dl')
             for (var key in data) {
                 let dt = document.createElement('dt')
-                dt.textContent = key
+                if (!isNaN(+key))
+                    dt.textContent = Number(key) + 1
+                else
+                    dt.textContent = key
                 dl.appendChild(dt)
                 if (data.hasOwnProperty(key)) {
                     let dd = document.createElement('dd')
@@ -33,20 +44,13 @@
             fetch('https://raw.githubusercontent.com/ewomackQA/JSONDataRepo/master/kings.json')
                 .then((data) => {
                     data.json().then((v) => {
-                        var searchbox = document.createElement('input')
-                        searchbox.type = 'search'
-                        document.body.appendChild(searchbox)
+                        var searchbox = document.getElementById('search')
+                        var form = document.getElementById('searchForm')
+                        var results = document.getElementById('results')
+                        var searchbutton = document.getElementById('searchBtn')
 
-                        var searchbutton = document.createElement('input')
-                        searchbutton.type = 'button'
-                        searchbutton.value = 'search!'
-                        document.body.appendChild(searchbutton)
-
-
-                        var results = document.createElement('div')
-                        document.body.appendChild(results)
-
-                        searchbutton.onclick = () => {
+                        form.addEventListener('submit', (e) => {
+                            e.preventDefault()
                             let term = searchbox.value.toLowerCase()
                             let res = v.filter(e =>
                                 e.nm.toLowerCase().includes(term.trim()) ||
@@ -58,10 +62,10 @@
                                 results.removeChild(results.lastChild);
                             }
                             results.appendChild(makedl(res))
-                        }
+                            return false
+                        })
                     })
                 })
-
         })
     </script>
 </body>
