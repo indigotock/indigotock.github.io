@@ -9,25 +9,62 @@
 </head>
 
 <body>
+    <form action="" id='createForm'>
+        <fieldset>
+            <legend>Test Triple</legend>
+            <label for="inputStr">Input text</label>
+            <input type="text" required name="inputStr" id="inputStr">
+            <input type="submit" value="Submit">
+        </fieldset>
+    </form>
+    <form action="" id='resultForm'>
+        <fieldset>
+            <legend>Results</legend>
+            <pre id='resultList'></pre>
+        </fieldset>
+    </form>
     <script>
-        function out(str) {
-            document.write(`${gettriples(str)} triple(s) in ${str}.</br>`)
+        let reslist = document.getElementById('resultList')
+        let inputStr = document.getElementById('inputStr')
+        let createForm = document.getElementById('createForm')
+
+        function out(str, list) {
+            reslist.innerText = str
+            let tmp = '\n'
+            let prevMatched = false
+            for (let i = 0; i < str.length; i++) {
+                for (let j = 0; j < list.length; j++) {
+                    let item = list[j]
+                    if (item == i) {
+                        tmp += '^'
+                        prevMatched = true
+                    }
+                }
+                if (!prevMatched) {
+                    tmp += ' '
+                }
+                prevMatched = false
+            }
+            reslist.innerText += tmp
         }
 
-        function gettriples(str) {
+        function getTriples(str) {
             var end = str.length - 2;
-            var cnt = 0;
+            var found = []
 
             for (var i = 0; i < end; i++) {
                 if (str[i] == str[i + 1] && str[i] == str[i + 2])
-                    cnt++;
+                    found.push(i)
             }
-            return cnt;
+            return found;
         }
-        out("xxxabyyyycd")
-        out("xxxabyyycd")
-        out("xxxabyyycddd")
-        out("aaaaaa")
+
+        createForm.addEventListener('submit', e => {
+            e.preventDefault()
+            out(inputStr.value, getTriples(inputStr.value))
+            return false
+        })
+        out("xxxxaxxxxx", getTriples("xxxxaxxxxx"))
     </script>
 </body>
 

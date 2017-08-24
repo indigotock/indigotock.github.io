@@ -18,6 +18,15 @@ input[disabled],
     border-color: #C7c7c7;
 }
 
+pre {
+    padding: 0;
+    margin: 0;
+    background-color: unset;
+    max-width: 100%;
+    line-height: 1;
+    overflow: hidden;
+}
+
 @media(max-width:500px) {
     .split>.split-child {
         width: 100%;
