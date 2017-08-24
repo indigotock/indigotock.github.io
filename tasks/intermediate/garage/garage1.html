@@ -16,6 +16,8 @@
                     <option value="1">C2ar</option>
                     <option value="2">Ca3r</option>
                 </select>
+                <label for="totalFee">Total Fees</label>
+                <input disabled type="text" name='totalFee' id="totalFee">
                 <div id='selected'>
                     Selection
                     <label>Kind</label>
@@ -78,6 +80,11 @@
                     list.appendChild(ele)
                 })
             }
+
+            function updateTotalFee() {
+                let feebox = document.getElementById('totalFee')
+                feebox.value = g.getTotalFeeString()
+            }
             let g = new Garage('Kyle\'s Workshop')
             let vehicles = []
 
@@ -101,6 +108,7 @@
                     g.addVehicle(vehicles[storedVehicleList.selectedIndex])
                     vehicles.splice(storedVehicleList.selectedIndex, 1)
                 }
+
                 updateVehicleSelectList(vehicles, document.querySelector('#allVehicles'))
                 updateVehicleSelectList(g.vehicles(), document.querySelector('#vehicleList'))
                 return false
@@ -121,8 +129,6 @@
                 if (ind != -1)
                     g.removeVehicle(ind)
 
-
-
                 updateVehicleSelectList(vehicles, document.querySelector('#allVehicles'))
                 updateVehicleSelectList(g.vehicles(), document.querySelector('#vehicleList'))
             })
@@ -130,6 +136,7 @@
                 let list = document.getElementById('vehicleList')
                 updateVehicleSelectList(g.vehicles(), list)
 
+                updateTotalFee();
                 document.querySelector('#selected').style.display =
                     (document.querySelector('#vehicleList').selectedIndex === -1) ? 'none' : 'block'
             })

@@ -91,6 +91,9 @@ Fault 4`))
                             console.log(`Vehicle ${i}: ${e}`)
                         })
                         break;
+                    case 'fees':
+                        console.log('Total fee: ' + g.getTotalFeeString())
+                        break;
                     case 'vehicles':
                         console.log('Non-checked in vehicles:')
                         vehicles.forEach((e, i) => {

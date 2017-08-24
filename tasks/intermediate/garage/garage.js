@@ -16,8 +16,15 @@ class Vehicle {
     getFixFee() {
         return this.numFaults() * ((this.kind === 'Motorbike') ? 100 : 130)
     }
+    getFixFeeString() {
+        return '£ ' + this.getFixFee()
+    }
     toString() {
-        return `${this.make} ${this.kind}: ${this.reg} (${this.numFaults()} faults)`
+        let ret = `${this.make} ${this.kind}: ${this.reg}`
+
+        if (this.numFaults() > 0)
+            ret += ` (${this.numFaults()} faults -- ${this.getFixFeeString()})`
+        return ret
     }
 }
 
@@ -26,6 +33,16 @@ function Garage(name) {
 
     let vehicles = []
     let updateListeners = []
+
+    this.getTotalFee = function () {
+        if (vehicles && vehicles.length > 0)
+            return vehicles.map(e => e.getFixFee()).reduce((a, b) => a + b)
+        return 0
+    }
+
+    this.getTotalFeeString = function () {
+        return '£ ' + this.getTotalFee()
+    }
 
     this.getVehicle = function (index) {
         return vehicles[index]
