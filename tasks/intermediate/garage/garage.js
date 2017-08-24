@@ -3,7 +3,7 @@ class Vehicle {
         this.kind = kind
         this.make = make
         this.reg = reg
-        this.faults = faults
+        this.faults = (faults || '').trim()
     }
     getFaults() {
         if (!this.faults)
