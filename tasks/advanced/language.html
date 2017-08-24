@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../style.css">
+</head>
+
+<body>
+    <form action="" id='form'>
+        <fieldset>
+            <legend>Input</legend>
+            <textarea id="textarea" cols="30" rows="10"></textarea>
+            <textarea disabled id="outarea" cols="30" rows="10"></textarea>
+            <input type="submit" value="Submit">
+        </fieldset>
+    </form>
+    <script src="UnicodeString.js"></script>
+    <script>
+        function langify(str) {
+            return str.trim().replace(/[b-df-hj-np-tv-z]/ig, (ins) => {
+                return ins + 'o' + ins.toLowerCase()
+            })
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            let area = document.getElementById('textarea')
+            document.getElementById('form').addEventListener('submit', e => {
+                e.preventDefault()
+                document.getElementById('outarea').value = langify(area.value)
+                return false
+            })
+        })
+    </script>
+</body>
+
+</html>
