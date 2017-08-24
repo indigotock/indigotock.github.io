@@ -21,7 +21,9 @@ input[disabled],
 @media(max-width:500px) {
     .split>.split-child {
         width: 100%;
-        float: none;
+    }
+    .split {
+        flex-direction: column;
     }
 }
 
