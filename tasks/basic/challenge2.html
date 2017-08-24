@@ -36,9 +36,17 @@
             return a + b + c
         }
 
-        document.write(guy)
+        function textNode() {
+            let ret = document.createElement('div')
+
+            ret.innerText = guy
+
+            return ret
+        }
+
+        document.body.appendChild(textNode())
         guy.age = 22
-        document.write(guy)
+        document.body.appendChild(textNode())
     </script>
 </body>
 
