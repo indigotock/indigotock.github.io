@@ -11,6 +11,9 @@
 <body>
     <script>
         function fizzbuzz(limit, fword, bword) {
+            let ret = document.createElement('ol')
+            ret.start = 0
+            ret.style.marginTop = 0
             for (let i = 0; i < limit; i++) {
                 var str = ""
                 if (i % 3 == 0)
@@ -20,12 +23,17 @@
 
                 if (str == '')
                     str = i
-                document.write(i + ': ' + str + '</br>')
+
+                let li = document.createElement('li')
+                li.innerText = str
+                ret.appendChild(li)
 
             }
+
+            return ret
         }
 
-        fizzbuzz(100, 'foo', 'bar')
+        document.body.appendChild(fizzbuzz(1000, 'foo', 'bar'))
     </script>
 </body>
 
