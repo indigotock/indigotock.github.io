@@ -44,7 +44,12 @@
                             while (results.hasChildNodes()) {
                                 results.removeChild(results.lastChild);
                             }
-                            results.appendChild(makedl(res))
+                            results.appendChild(makedl(res, {
+                                nm: 'name',
+                                cty: 'city',
+                                hse: 'house',
+                                yrs: 'years'
+                            }))
                             return false
                         })
                     })
