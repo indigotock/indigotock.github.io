@@ -2,10 +2,17 @@
 @import url('https://fonts.googleapis.com/css?family=Lora|Montserrat|Open+Sans');
 .split {
     display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    width: 100%;
 }
 
-.split>.split-child {
-    width: 50%;
+.split.vertical {
+    flex-direction: column;
+}
+
+.split:not(.vertical)>.split-child {
+    flex: 1;
 }
 
 dl {
