@@ -89,6 +89,45 @@ class Hangman {
         this.currentStatistics = {}
         this.word = ''
         this.statistics = loadStatistics.call(this)
+        this.structure = `___________ 
+  |       | 
+  |       0 
+  |      /|\\
+  |      / \\
+__|____      `
+        this.failPaths = [
+            [
+                [0, 9],
+                [0, 10],
+                [1, 10],
+                [2, 10],
+                [3, 9],
+                [3, 10],
+                [3, 11],
+                [4, 9],
+                [4, 11],
+            ],
+            [
+                [1, 10],
+                [2, 10],
+                [3, 9],
+                [3, 10],
+                [3, 11],
+                [4, 9],
+                [4, 11]
+            ],
+            [
+                [3, 9],
+                [3, 10],
+                [3, 11],
+                [4, 9],
+                [4, 11],
+            ]
+        ]
+
+        this.failPath = function () {
+            return this.failPaths[this.difficulty]
+        }
 
         this.events.forEach(function (element) {
             this.callbacks[element] = []
@@ -104,26 +143,12 @@ class Hangman {
             }, this)
         }
 
-        this.startGame = function (player) {
+        this.startGame = function (player, difficulty) {
             this.currentStatistics = this.statistics[player] || new Statistics(player)
+            this.difficulty = difficulty || 0
             this.statistics[player] = this.currentStatistics
             this.currentStatistics.games++;
             this.guessCount = 0
-            this.structure = `___________ 
-  |       | 
-  |       0 
-  |      /|\\
-  |      / \\
-__|____      `
-            this.failPath = [
-                [1, 10],
-                [2, 10],
-                [3, 9],
-                [3, 10],
-                [3, 11],
-                [4, 9],
-                [4, 11],
-            ]
             this.failCount = 0
             this.guesses = new Set()
             this.playing = false
@@ -154,7 +179,7 @@ __|____      `
         }
 
         this.getCurrentBoard = function () {
-            let fails = this.failPath
+            let fails = this.failPath()
             let path = this.structure.split('\n').map(e => {
                 return e.split('')
             })
@@ -191,7 +216,7 @@ __|____      `
                 if (!this.guesses.has(element))
                     hasWon = false
             }, this);
-            if (this.failCount >= this.failPath.length)
+            if (this.failCount >= this.failPath().length)
                 hasLost = true
 
             if (hasWon || hasLost) {

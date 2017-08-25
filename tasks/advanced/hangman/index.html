@@ -26,7 +26,14 @@
                 <fieldset>
                     <legend>New</legend>
                     <label for="player">Name</label>
-                    <input required type="text" name="player" id="player" value='Player'>
+                    <div class='split'>
+                        <input required class='split-child' type="text" name="player" id="player" value='Player'>
+                        <select class='split-child l-pad' name="difficulty" id="difficulty">
+                            <option value="0">Easy</option>
+                            <option value="1">Medium</option>
+                            <option value="2">Hard</option>
+                        </select>
+                    </div>
                     <input id='newGame' type="submit" value="New game">
                 </fieldset>
             </form>
@@ -62,6 +69,7 @@
             let form = document.getElementById('form')
             let player = document.getElementById('player')
             let guess = document.getElementById('guess')
+            let difficulty = document.getElementById('difficulty')
             let board = document.getElementById('board')
             let submit = document.getElementById('submit')
             let newForm = document.getElementById('newForm')
@@ -82,7 +90,7 @@
 
             newForm.addEventListener('submit', e => {
                 e.preventDefault()
-                game.startGame(player.value)
+                game.startGame(player.value, difficulty.value)
                 guess.focus()
                 updateBoard()
                 return false
