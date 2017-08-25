@@ -13,33 +13,34 @@ let NotesManager = function () {
         "add_note",
     ]
     this.listeners = {}
-    this.addListener = function (ev, cb) {
-        if (this.events.indexOf(ev) != -1) {
-            if (typeof (this.listeners[ev]) != 'object') {
-                this.listeners[ev] = []
-            }
-            this.listeners[ev].push(cb)
+}
+NotesManager.prototype.addListener = function (ev, cb) {
+    if (this.events.indexOf(ev) != -1) {
+        if (typeof (this.listeners[ev]) != 'object') {
+            this.listeners[ev] = []
         }
-    }
-    this.fireEvent = function (type, data) {
-        let coll = this.listeners[type] || []
-        coll.forEach(function (element) {
-            element(...data)
-        }, this)
-    }
-    this.add = function (note) {
-        this.notes.push(note)
-        this.fireEvent("add_note", [note])
-    }
-    this.addBulk = function (notes) {
-        notes.forEach(function (e) {
-            this.add(e)
-        }, this)
-    }
-    this.init = function (data) {
-        this.addBulk(data)
+        this.listeners[ev].push(cb)
     }
 }
+NotesManager.prototype.fireEvent = function (type, data) {
+    let coll = this.listeners[type] || []
+    coll.forEach(function (element) {
+        element(...data)
+    }, this)
+}
+NotesManager.prototype.add = function (note) {
+    this.notes.push(note)
+    this.fireEvent("add_note", [note])
+}
+NotesManager.prototype.addBulk = function (notes) {
+    notes.forEach(function (e) {
+        this.add(e)
+    }, this)
+}
+NotesManager.prototype.init = function (data) {
+    this.addBulk(data)
+}
+
 
 
 function NoteManagerialThing(owner) {
