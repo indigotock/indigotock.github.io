@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../../../style.css">
+    <title>Document</title>
+    <style>
+        #word {
+            letter-spacing: .2em;
+        }
+
+        #gameArea *:not(legend) {
+            font-size: 2em;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Hangman</h1>
+    <div class='split'>
+        <div class='split split-child vertical'>
+            <form action="" id='newForm' class='split-child'>
+                <fieldset>
+                    <legend>New</legend>
+                    <label for="player">Name</label>
+                    <input required type="text" name="player" id="player" value='Player'>
+                    <input id='newGame' type="submit" value="New game">
+                </fieldset>
+            </form>
+            <form action="" class='split-child' id='form'>
+                <fieldset>
+                    <legend>Guess</legend>
+                    <label for="guess">Guess a letter or the whole word</label>
+                    <input disabled required type="text" name="guess" id="guess">
+                    <input disabled id='submit' type="submit" value="Guess">
+                    <label for="output">History</label>
+                    <textarea disabled name="output" id="output" cols="30" rows="10"></textarea>
+                </fieldset>
+            </form>
+        </div>
+        <form class='split-child split'>
+            <fieldset id='gameArea' class='split-child'>
+                <legend>Game</legend>
+                <pre id='board'></pre>
+                </br>
+                <pre id='word'></pre>
+            </fieldset>
+            <fieldset class='split-child'>
+                <legend>Statistics</legend>
+                <div id='statistics'></div>
+            </fieldset>
+        </form>
+    </div>
+
+    <script src="hangman.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let game = new Hangman()
+            let form = document.getElementById('form')
+            let player = document.getElementById('player')
+            let guess = document.getElementById('guess')
+            let board = document.getElementById('board')
+            let submit = document.getElementById('submit')
+            let newForm = document.getElementById('newForm')
+            let newGame = document.getElementById('newGame')
+            let word = document.getElementById('word')
+            let output = document.getElementById('output')
+            let statistics = document.getElementById('statistics')
+
+            function writeToOutput(str) {
+                let orig = output.value.trim()
+                output.value = str.trim() + '\n' + orig
+            }
+
+            function updateBoard() {
+                this.board.innerText = game.getCurrentBoard()
+                this.word.innerText = game.getPlayingWord()
+            }
+
+            newForm.addEventListener('submit', e => {
+                e.preventDefault()
+                game.startGame(player.value)
+                guess.focus()
+                updateBoard()
+                return false
+            })
+
+            form.addEventListener('submit', e => {
+                e.preventDefault()
+
+                game.makeGuess(guess.value)
+                guess.value = ''
+                return false;
+            })
+
+            // ['started', 'loaded', 'guess', 'game_win', 'game_lose']
+            game.registerHandler('started', (game, args) => {
+                submit.removeAttribute('disabled')
+                guess.removeAttribute('disabled')
+                output.value = ''
+            })
+            // game.registerHandler('loaded', (game, args) => {
+            // })
+
+            game.registerHandler('guess', (game, term, success) => {
+                writeToOutput(`${term}: ${success?'Hit!':'Miss.'}`)
+                updateBoard()
+            })
+
+            game.registerHandler('game_win', (game) => {
+                submit.setAttribute('disabled', true)
+                guess.setAttribute('disabled', true)
+                writeToOutput('You win!')
+            })
+
+            game.registerHandler('game_lose', (game) => {
+                submit.setAttribute('disabled', true)
+                guess.setAttribute('disabled', true)
+                writeToOutput('Boo! You lost. The word was ' + game.word)
+            })
+
+            game.registerHandler('stats', (game, stats) => {
+                let deets = []
+                for (var key in stats) {
+                    if (stats.hasOwnProperty(key)) {
+                        var element = stats[key];
+                        deets.push({
+                            name: key,
+                            element: element.toDetails()
+                        })
+                    }
+                }
+                let open = []
+                while (statistics.hasChildNodes()) {
+                    if (statistics.lastChild.attributes.getNamedItem('open')) {
+                        let name = statistics.lastChild.getElementsByTagName('summary')[0].innerText
+                        open.push(name)
+                    }
+                    statistics.removeChild(statistics.lastChild)
+                }
+                deets.forEach(function (element) {
+                    if (open.indexOf(element.name) != -1) {
+                        element.element.setAttribute('open', true)
+                    }
+                    statistics.appendChild(element.element)
+                }, this);
+            })
+
+            // Load words, triggering the loaded event
+            game.loadWordsAjax('https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt')
+        });
+    </script>
+</body>
+
+</html>
