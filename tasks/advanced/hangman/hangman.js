@@ -52,7 +52,7 @@ Statistics.prototype.getLosses = function () {
 }
 
 let loadStatistics = function () {
-    let loaded = localStorage.getItem('stats')
+    let loaded = (localStorage.getItem('stats')).name
     if (loaded !== null) {
         let parsed = JSON.parse(loaded)
         if (Array.isArray(parsed)) {
@@ -97,6 +97,8 @@ class Hangman {
 __|____      `
         this.failPaths = [
             [
+                [0, 7],
+                [0, 8],
                 [0, 9],
                 [0, 10],
                 [1, 10],
@@ -119,6 +121,11 @@ __|____      `
             [
                 [3, 9],
                 [3, 10],
+                [3, 11],
+                [4, 9],
+                [4, 11],
+            ],
+            [
                 [3, 11],
                 [4, 9],
                 [4, 11],
@@ -152,7 +159,16 @@ __|____      `
             this.failCount = 0
             this.guesses = new Set()
             this.playing = false
-            this.word = this.randomWord()
+
+            let difficultyMaxWordLengths = [
+                4, 6, 8
+            ]
+            this.word = ''
+            do {
+                this.word = this.randomWord()
+            } while (this.word.length > difficultyMaxWordLengths[difficulty] ||
+                this.word.length < (difficultyMaxWordLengths[difficulty - 1] || 0))
+
 
             this.word = this.word.toLowerCase()
             this.playing = true
