@@ -5,10 +5,15 @@
     flex-direction: row;
     align-items: stretch;
     width: 100%;
+    justify-content: space-between
 }
 
 .split.vertical {
     flex-direction: column;
+}
+
+.l-pad {
+    margin-left: 1em;
 }
 
 .split:not(.vertical)>.split-child {
