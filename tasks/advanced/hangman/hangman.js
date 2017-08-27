@@ -52,7 +52,7 @@ Statistics.prototype.getLosses = function () {
 }
 
 let loadStatistics = function () {
-    let loaded = (localStorage.getItem('stats')).name
+    let loaded = (localStorage.getItem('stats'))
     if (loaded !== null) {
         let parsed = JSON.parse(loaded)
         if (Array.isArray(parsed)) {
